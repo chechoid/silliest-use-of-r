@@ -3,6 +3,7 @@ library(googlesheets4)
 library(gargle)
 library(ggimage)
 library(class)
+library(ggtext)
 
 datos <- read_sheet("1D_nBkh3nJ5io1-FQ7o1MCfqRNMVH5-nKKmiIe_ZFhEg")
 
@@ -22,7 +23,7 @@ clones <- clones %>%
   select(id, everything()) %>% 
   pivot_longer(cols = c("Facha de Keanu": "Copadez de Javier"),
                names_to = "personaje",
-               values_to = "puntaje")
+               values_to = "puntaje") 
 
 clones
 
@@ -91,6 +92,18 @@ ggplot(resultados, aes(x = copadez_promedio, y = facha_promedio)) +
   geom_image(aes(image=foto), size = 0.08) +
   theme_minimal() +
   scale_x_continuous(limits = c(1,10)) +
-  scale_y_continuous(limits = c(1,10))
+  scale_y_continuous(limits = c(1,10)) +
+  labs(title = "Average Awesomeness and Gorgeousness",
+       subtitle = paste0("n = ", nrow(datos)),
+       x = "Avg Awesomeness",
+       y = "Avg Gorgeousness",
+       caption = "No aunt responded to this survey")  +
+  theme(plot.title = element_text(color = "#18436b", face = "bold"),
+        plot.subtitle = element_text(color = "#5f8eb8"),
+        plot.caption = element_text(color = "#5f8eb8"),
+        axis.title = element_text(color = "#5f8eb8"),
+        axis.text.x = element_text(color = "#18436b"),
+        axis.text.y = element_text(color = "#18436b")) 
 
-ggsave("clones.png", dpi = 320)
+
+ggsave("clones.png", dpi = 320, width = 5, height = 5,)
